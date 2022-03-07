@@ -109,6 +109,12 @@ statefulsets:
         image:  rabbitmq:3.9.11-management-alpine
         imagePullPolicy: IfNotPresent
         extraVars:
+          http_proxy: http://proxy.service:3128
+          https_proxy: http://proxy.service:3128
+          GLOBAL_AGENT_HTTP_PROXY: http://proxy.service:3128
+          GLOBAL_AGENT_HTTPS_PROXY: http://proxy.service:3128
+          no_proxy: .svc.cluster.local,.service,.internal,.vops.int,metadata.google.internal,.psc.us-west1.gcp.cloud.es.io,.psc.us-west1.gcp.cloud.es.io
+          GLOBAL_AGENT_NO_PROXY	: "*.svc.cluster.local,*.service,*.internal,*.vops.int,metadata.google.internal,.psc.us-west1.gcp.cloud.es.io,.psc.us-west1.gcp.cloud.es.io,.psc.us-west1.gcp.cloud.es.io"
           RABBITMQ_DEFAULT_VHOST: voice
           RABBITMQ_DEFAULT_USER: voice
           RABBITMQ_DEFAULT_PASS: voice
@@ -132,13 +138,7 @@ deployments:
             name: voice-redis
         image: "redis:5.0.9-alpine"
         imagePullPolicy: IfNotPresent
-        extraVars:
-          http_proxy: http://proxy.service:3128
-          https_proxy: http://proxy.service:3128
-          GLOBAL_AGENT_HTTP_PROXY: http://proxy.service:3128
-          GLOBAL_AGENT_HTTPS_PROXY: http://proxy.service:3128
-          no_proxy: .svc.cluster.local,.service,.internal,.vops.int,metadata.google.internal,.psc.us-west1.gcp.cloud.es.io,.psc.us-west1.gcp.cloud.es.io
-          GLOBAL_AGENT_NO_PROXY	: "*.svc.cluster.local,*.service,*.internal,*.vops.int,metadata.google.internal,.psc.us-west1.gcp.cloud.es.io,.psc.us-west1.gcp.cloud.es.io,.psc.us-west1.gcp.cloud.es.io"
+
   voice-eos-hyperion-api:
     replicaCount: 1
     tolerations:
@@ -158,6 +158,12 @@ deployments:
     initContainers:
       check-hyperion-rabbit-mq-health:
         extraVars:
+          http_proxy: http://proxy.service:3128
+          https_proxy: http://proxy.service:3128
+          GLOBAL_AGENT_HTTP_PROXY: http://proxy.service:3128
+          GLOBAL_AGENT_HTTPS_PROXY: http://proxy.service:3128
+          no_proxy: .svc.cluster.local,.service,.internal,.vops.int,metadata.google.internal,.psc.us-west1.gcp.cloud.es.io,.psc.us-west1.gcp.cloud.es.io
+          GLOBAL_AGENT_NO_PROXY	: "*.svc.cluster.local,*.service,*.internal,*.vops.int,metadata.google.internal,.psc.us-west1.gcp.cloud.es.io,.psc.us-west1.gcp.cloud.es.io,.psc.us-west1.gcp.cloud.es.io,localhost"
           user: voice
           pass: voice
           vhost: voice
@@ -182,7 +188,7 @@ deployments:
           - containerPort: 7000
             protocol: TCP
             name: hyperion-api
-        image: "gcr.io/voice-dev-infra-services/voice/voice-eos-hyperion:{{ .Values.tag }}"
+        image: "gcr.io/voice-dev-infra-services/voice/voice-eos-hyperion:{{ .Values.release.tag }}"
         imagePullPolicy: Always
         command: ["bash", "run.sh","voice-api"]
         lifecycle:
@@ -207,6 +213,12 @@ deployments:
             readOnly: false
         extraVars:
           # LaunchDarkly Config
+          http_proxy: http://proxy.service:3128
+          https_proxy: http://proxy.service:3128
+          GLOBAL_AGENT_HTTP_PROXY: http://proxy.service:3128
+          GLOBAL_AGENT_HTTPS_PROXY: http://proxy.service:3128
+          no_proxy: .svc.cluster.local,.service,.internal,.vops.int,metadata.google.internal,.psc.us-west1.gcp.cloud.es.io,.psc.us-west1.gcp.cloud.es.io
+          GLOBAL_AGENT_NO_PROXY	: "*.svc.cluster.local,*.service,*.internal,*.vops.int,metadata.google.internal,.psc.us-west1.gcp.cloud.es.io,.psc.us-west1.gcp.cloud.es.io,.psc.us-west1.gcp.cloud.es.io,localhost"
           LAUNCHDARKLY_SDK_KEY: "vault:secret/data/applications/devel#LAUNCHDARKLY_SDK_KEY"
 
 configmaps:
@@ -219,7 +231,7 @@ configmaps:
           pm2_scaling: 1
           node_max_old_space_size: 1024
           chain_name: voice
-          server_addr: 0.0.0.0
+          server_addr: localhost
           server_port: 7000
           server_name: "{{ .Values.config.serverName }}"
           provider_name: "{{ .Values.config.provider_name }}"
@@ -344,7 +356,7 @@ configmaps:
           pm2_scaling: 1
           node_max_old_space_size: 1024
           chain_name: voice
-          server_addr: 0.0.0.0
+          server_addr: localhost
           server_port: 7000
           server_name: "{{ .Values.config.serverName }}"
           provider_name: " {{ .Values.config.provider_name }}"
