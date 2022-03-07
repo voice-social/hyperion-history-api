@@ -8,6 +8,10 @@ config:
   chain_logo_url: "https://storage.googleapis.com/voice_logo/logo.ico"
   es_replicas: 1
   abi_scan: false
+  elastic_host:  vault:secret/data/devops/elasticsearch#ELASTIC_HOST
+  elastic_user: elastic
+  elastic_pass: vault:secret/data/devops/elasticsearch#ELASTIC_PASSWORD
+
 services:
   voice-eos-hyperion:
     customLabels:
@@ -157,7 +161,7 @@ deployments:
             memory: "1024Mi"
         volumeMounts:
           - name: eos-hyperion-connections
-            mountPath: /hyperion-history-api/connections.json
+            mountPath: /tmp/connections.json
             subPath: connections.json
           - name: "{{ if .Values.config.abi_scan }}eos-hyperion-config-abi{{ else }}eos-hyperion-config{{ end }}"
             mountPath: hyperion-history-api/chains/voice.config.json
@@ -220,8 +224,6 @@ deployments:
           elastic_pass: {{ .Values.config.elastic_pass}}
           elastic_host: {{ .Values.config.elastic_host}}
           server_name: {{ .Values.config.server_name}}
-          # LaunchDarkly Config
-          LAUNCHDARKLY_SDK_KEY: "vault:secret/data/applications/prod#LAUNCHDARKLY_SDK_KEY"
         lifecycle:
           preStop:
             exec:
@@ -235,13 +237,11 @@ deployments:
             memory: "256Mi"
         volumeMounts:
           - name: eos-hyperion-connections
-            mountPath: hyperion-history-api/connections.json
+            mountPath: /tmp/connections.json
             subPath: connections.json
-            readOnly: false
           - name: "{{ if .Values.config.abi_scan }}eos-hyperion-config-abi{{ else }}eos-hyperion-config{{ end }}"
             mountPath: hyperion-history-api/chains/voice.config.json
             subPath: voice.config.json
-            readOnly: false
 hpas:
   voice-eos-hyperion-api:
     minReplicas: 1
