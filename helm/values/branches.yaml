@@ -8,6 +8,10 @@ config:
   chain_logo_url: "https://storage.googleapis.com/voice_logo/logo.ico"
   es_replicas: 1
   abi_scan: false
+  elastic_host: elastic.service.us-west1-dev.vops.int
+  elastic_user: ""
+  elastic_pass: ""
+
 services:
   voice-eos-hyperion:
     customLabels:
@@ -208,7 +212,10 @@ deployments:
           no_proxy: .svc.cluster.local,.service,.internal,.vops.int,metadata.google.internal,.psc.us-west1.gcp.cloud.es.io,.psc.us-west1.gcp.cloud.es.io
           GLOBAL_AGENT_NO_PROXY	: "*.svc.cluster.local,*.service,*.internal,*.vops.int,metadata.google.internal,.psc.us-west1.gcp.cloud.es.io,.psc.us-west1.gcp.cloud.es.io,.psc.us-west1.gcp.cloud.es.io,${POD_ID}"
           LAUNCHDARKLY_SDK_KEY: "vault:secret/data/applications/devel#LAUNCHDARKLY_SDK_KEY"
-
+          ELASTIC_USER: "{{ .Values.config.elastic_user }}"
+          ELASTIC_PASS: "{{ .Values.config.elastic_pass }}"
+          ELASTIC_HOST: "{{ .Values.config.elastic_host }}"
+          SERVER_NAME: "{{ .Values.config.server_name }}"
 configmaps:
   eos-hyperion-config-abi:
     toJson: true
