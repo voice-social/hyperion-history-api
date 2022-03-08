@@ -196,7 +196,7 @@ deployments:
             memory: "256Mi"
         volumeMounts:
           - name: eos-hyperion-connections
-            mountPath: hyperion-history-api/connections.json
+            mountPath: /tmp/connections.json
             subPath: connections.json
             readOnly: false
           - name: "{{ if .Values.config.abi_scan }}eos-hyperion-config-abi{{ else }}eos-hyperion-config{{ end }}"
@@ -216,6 +216,7 @@ deployments:
           ELASTIC_PASS: "{{ .Values.config.elastic_pass }}"
           ELASTIC_HOST: "{{ .Values.config.elastic_host }}"
           SERVER_NAME: "{{ .Values.config.server_name }}"
+
 configmaps:
   eos-hyperion-config-abi:
     toJson: true
