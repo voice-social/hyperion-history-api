@@ -182,7 +182,7 @@ deployments:
             name: hyperion-api
         image: "gcr.io/voice-dev-infra-services/voice/voice-eos-hyperion:{{ .Values.release.tag }}"
         imagePullPolicy: Always
-        command: ["bash", "scripts/get-secrets.sh","voice-api"]
+        command: ["bash", "run.sh","voice-api"]
         lifecycle:
           preStop:
             exec:
@@ -352,7 +352,7 @@ configmaps:
           pm2_scaling: 1
           node_max_old_space_size: 1024
           chain_name: voice
-          server_addr: localhost
+          server_addr: ${POD_IP}
           server_port: 7000
           server_name: "{{ .Values.config.serverName }}"
           provider_name: " {{ .Values.config.provider_name }}"
