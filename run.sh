@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+
+jq --arg  pod_ip $POD_IP \
+    '.api.server_addr = $POD_IP'  /hyperion-history-api/chains/voice.config.json > /hyperion-history-api/chains/tmp.json && \
+    mv /hyperion-history-api/chains/tmp.json /hyperion-history-api/chains/voice.config.json
+
 if [ $# -eq 0 ]; then
   echo 'Please inform the app name. ex: "./run.sh indexer"'
   exit 1
