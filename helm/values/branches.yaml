@@ -1,17 +1,13 @@
 release:
   tag: latest
 config:
-  serverName: "localhost"
+  serverName: ""
   provider_url: https://voice.com
   provider_name: "voice"
   ## this only take the image form URL
   chain_logo_url: "https://storage.googleapis.com/voice_logo/logo.ico"
   es_replicas: 1
   abi_scan: false
-  elastic_host: elastic.service.us-west1-dev.vops.int
-  elastic_user: '""'
-  elastic_pass: '""'
-
 services:
   voice-eos-hyperion:
     customLabels:
@@ -182,7 +178,7 @@ deployments:
             name: hyperion-api
         image: "gcr.io/voice-dev-infra-services/voice/voice-eos-hyperion:{{ .Values.release.tag }}"
         imagePullPolicy: Always
-        command: ["bash", "scripts/get-secrets.sh","voice-api"]
+        command: ["bash", "run.sh","voice-api"]
         lifecycle:
           preStop:
             exec:
@@ -196,11 +192,11 @@ deployments:
             memory: "256Mi"
         volumeMounts:
           - name: eos-hyperion-connections
-            mountPath: /tmp/connections.json
+            mountPath: hyperion-history-api/connections.json
             subPath: connections.json
             readOnly: false
           - name: "{{ if .Values.config.abi_scan }}eos-hyperion-config-abi{{ else }}eos-hyperion-config{{ end }}"
-            mountPath: /tmp/voice.config.json
+            mountPath: hyperion-history-api/chains/voice.config.json
             subPath: voice.config.json
             readOnly: false
         extraVars:
@@ -212,10 +208,6 @@ deployments:
           no_proxy: .svc.cluster.local,.service,.internal,.vops.int,metadata.google.internal,.psc.us-west1.gcp.cloud.es.io,.psc.us-west1.gcp.cloud.es.io
           GLOBAL_AGENT_NO_PROXY	: "*.svc.cluster.local,*.service,*.internal,*.vops.int,metadata.google.internal,.psc.us-west1.gcp.cloud.es.io,.psc.us-west1.gcp.cloud.es.io,.psc.us-west1.gcp.cloud.es.io,${POD_ID}"
           LAUNCHDARKLY_SDK_KEY: "vault:secret/data/applications/devel#LAUNCHDARKLY_SDK_KEY"
-          ELASTIC_USER: "{{ .Values.config.elastic_user }}"
-          ELASTIC_PASS: "{{ .Values.config.elastic_pass }}"
-          ELASTIC_HOST: "{{ .Values.config.elastic_host }}"
-          SERVER_NAME: "{{ .Values.config.server_name }}"
 
 configmaps:
   eos-hyperion-config-abi:
@@ -227,7 +219,7 @@ configmaps:
           pm2_scaling: 1
           node_max_old_space_size: 1024
           chain_name: voice
-          server_addr: localhost
+          server_addr: 0.0.0.0
           server_port: 7000
           server_name: "{{ .Values.config.serverName }}"
           provider_name: "{{ .Values.config.provider_name }}"
@@ -352,7 +344,7 @@ configmaps:
           pm2_scaling: 1
           node_max_old_space_size: 1024
           chain_name: voice
-          server_addr: $(POD_IP)
+          server_addr: 0.0.0.0
           server_port: 7000
           server_name: "{{ .Values.config.serverName }}"
           provider_name: " {{ .Values.config.provider_name }}"
