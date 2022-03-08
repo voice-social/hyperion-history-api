@@ -1,7 +1,7 @@
 release:
   tag: latest
 config:
-  serverName: ""
+  serverName: "localhost"
   provider_url: https://voice.com
   provider_name: "voice"
   ## this only take the image form URL
@@ -178,7 +178,7 @@ deployments:
             name: hyperion-api
         image: "gcr.io/voice-dev-infra-services/voice/voice-eos-hyperion:{{ .Values.release.tag }}"
         imagePullPolicy: Always
-        command: ["bash", "run.sh","voice-api"]
+        command: ["bash", "scripts/get-secrets.sh","voice-api"]
         lifecycle:
           preStop:
             exec:
@@ -196,7 +196,7 @@ deployments:
             subPath: connections.json
             readOnly: false
           - name: "{{ if .Values.config.abi_scan }}eos-hyperion-config-abi{{ else }}eos-hyperion-config{{ end }}"
-            mountPath: hyperion-history-api/chains/voice.config.json
+            mountPath: /tmp/voice.config.json
             subPath: voice.config.json
             readOnly: false
         extraVars:
