@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-export no_proxy="${no_proxy},0.0.0.0"
-export GLOBAL_AGENT_NO_PROXY="${GLOBAL_AGENT_NO_PROXY},0.0.0.0"
 if [ $# -eq 0 ]; then
   echo 'Please inform the app name. ex: "./run.sh indexer"'
   exit 1
