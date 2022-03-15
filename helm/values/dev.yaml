@@ -12,6 +12,7 @@ config:
   elastic_user: ''
   elastic_pass: ''
 
+
 services:
   voice-eos-hyperion:
     customLabels:
