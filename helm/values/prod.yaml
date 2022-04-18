@@ -109,6 +109,8 @@ deployments:
   voice-eos-hyperion-indexer:
     replicaCount: 1
     terminationGracePeriodSeconds: 60
+    podAnnotations:
+      releaseTime: '{{ now "2006-01-02 15:04:05Z" | quote }}'
     affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
@@ -173,6 +175,8 @@ deployments:
   voice-eos-hyperion-api:
     replicaCount: 1
     terminationGracePeriodSeconds: 60
+    podAnnotations:
+      releaseTime: '{{ now "2006-01-02 15:04:05Z" | quote }}'
     affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
