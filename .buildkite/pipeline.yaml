@@ -6,7 +6,6 @@ defaults:
         repository: https://github.com/voice-social/voice-buildkite-template.git
 
 steps:
-
 # build docker images
   - label: ":docker: trigger docker build hyperion-history-api"
     command:
