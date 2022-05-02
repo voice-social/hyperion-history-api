@@ -8,10 +8,7 @@ defaults:
 steps:
 
   - command:
-      - npm install
-      - ./hpm install -r https://github.com/voice-social/hyperion-explorer-plugin explorer
-    artifact_paths:
-      - plugins/repos/explorer/*
+      - buildkite-agent artifact download hyperion-history-api/plugins/repos/explorer.tar.gz --build hyperion-exploere-plugin
     agents: *default-agents
 
 # # build docker images dev-main
