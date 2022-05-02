@@ -8,7 +8,7 @@ defaults:
 steps:
 
   - command:
-      - buildkite-agent artifact download hyperion-history-api/plugins/repos/explorer.tar.gz --build ./plugins/repos/
+      - buildkite-agent artifact download hyperion-history-api/plugins/repos/explorer.tar.gz ./plugins/repos/ --build hyperion-explorer-plugin
     agents: *default-agents
 
 # # build docker images dev-main
