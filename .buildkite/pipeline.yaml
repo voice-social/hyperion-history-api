@@ -10,7 +10,8 @@ steps:
   - command:
       - npm install
       - ./hpm install -r https://github.com/voice-social/hyperion-explorer-plugin explorer
-      - buildkite-agent artifact upload plugins/repos/explorer/*
+    artifact_paths:
+      - plugins/repos/explorer/*
     agents: *default-agents
 
 # # build docker images dev-main
