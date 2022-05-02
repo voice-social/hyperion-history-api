@@ -12,8 +12,6 @@ WORKDIR /hyperion-history-api
 COPY . .
 COPY .npmrc.template .npmrc
 RUN npm ci && \
-      git clone https://github.com/voice-social/hyperion-explorer-plugin /hyperion-history-api/plugins/repos/explorer && \
-      mv /hyperion-history-api/plugins/repos/explorer/.npmrc.template  /hyperion-history-api/plugins/repos/explorer/.npmrc && \
       ./hpm build-all && \
       ./hpm enable explorer && \
       pm2 startup
