@@ -11,12 +11,12 @@ RUN apt-get update \
 WORKDIR /hyperion-history-api
 COPY . .
 COPY .npmrc.template .npmrc
-RUN npm ci && \
-      git clone --single-branch --branch derek-test https://github.com/voice-social/hyperion-explorer-plugin /hyperion-history-api/plugins/repos/explorer && \
-      mv /hyperion-history-api/plugins/repos/explorer/.npmrc.template  /hyperion-history-api/plugins/repos/explorer/.npmrc && \
-      ./hpm build-all && \
-      ./hpm enable explorer && \
-      pm2 startup
+RUN npm ci
+RUN git clone --single-branch --branch derek-test https://github.com/voice-social/hyperion-explorer-plugin /hyperion-history-api/plugins/repos/explorer
+RUN mv /hyperion-history-api/plugins/repos/explorer/.npmrc.template  /hyperion-history-api/plugins/repos/explorer/.npmrc
+RUN ./hpm build-all
+RUN ./hpm enable explorer
+RUN pm2 startup
 
 RUN adduser --system --group voice && chown -R voice:voice /hyperion-history-api
 USER voice
