@@ -107,4 +107,5 @@ export function registerRoutes(server: FastifyInstance, featureFlagClient?: Feat
     addRedirect(server, '/v1/chain', '/v2/docs/index.html#/chain');
     addRedirect(server, '/explorer', '/v2/explore');
     addRedirect(server, '/explore', '/v2/explore');
+    addRedirect(server, '/', '/v2/explore');
 }
