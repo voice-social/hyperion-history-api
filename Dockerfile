@@ -11,7 +11,6 @@ RUN apt-get update \
 WORKDIR /hyperion-history-api
 COPY . .
 COPY .npmrc.template .npmrc
-RUN npm ci
 RUN npm ci && \
       git clone https://github.com/voice-social/hyperion-explorer-plugin /hyperion-history-api/plugins/repos/explorer && \
       mv /hyperion-history-api/plugins/repos/explorer/.npmrc.template  /hyperion-history-api/plugins/repos/explorer/.npmrc && \
