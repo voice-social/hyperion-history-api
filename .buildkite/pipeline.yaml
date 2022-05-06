@@ -36,7 +36,7 @@ steps:
 # promote image
   - label: ":arrow_up: Trigger gcrane promote"
     command:
-      - "buildkite-agent pipeline upload voice-buildkite-template/gcrane/promote/template.yaml"
+      - "buildkite-agent pipeline upload voice-buildkite-template/gcrane/promote/main-prod/template.yaml"
     env:
       IMAGE_NAME: voice-eos-hyperion
     agents: *default-agents
