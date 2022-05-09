@@ -14,6 +14,8 @@ COPY .npmrc.template .npmrc
 RUN npm ci && \
       git clone https://github.com/voice-social/hyperion-explorer-plugin /hyperion-history-api/plugins/repos/explorer && \
       mv /hyperion-history-api/plugins/repos/explorer/.npmrc.template  /hyperion-history-api/plugins/repos/explorer/.npmrc && \
+      git clone https://github.com/voice-social/hyperion-simpleassets-plugin /hyperion-history-api/plugins/repos/sa+ && \
+      mv /hyperion-history-api/plugins/repos/sa+/.npmrc.template  /hyperion-history-api/plugins/repos/sa+/.npmrc && \
       ./hpm build-all && \
       ./hpm enable explorer && \
       pm2 startup
