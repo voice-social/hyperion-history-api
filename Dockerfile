@@ -1,5 +1,6 @@
 FROM ubuntu:20.04
 ARG NPM_AUTH_TOKEN
+ARG BUILDKITE_ACCESS_TOKEN
 RUN apt-get update \
         && apt-get upgrade -y \
         && apt-get autoremove \
@@ -12,9 +13,7 @@ WORKDIR /hyperion-history-api
 COPY . .
 COPY .npmrc.template .npmrc
 RUN npm ci && \
-      ./hpm build-all && \
-      ./hpm enable explorer && \
-      pm2 startup
+      ./scripts/getBuildkiteArtifact.sh
 
 RUN adduser --system --group voice && chown -R voice:voice /hyperion-history-api
 USER voice
