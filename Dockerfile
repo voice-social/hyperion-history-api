@@ -1,21 +1,17 @@
-FROM ubuntu:20.04
-ARG NPM_AUTH_TOKEN
+FROM gcr.io/voice-dev-infra-services/voice/hyperion-explorer-plugin:latest as explorer
+FROM gcr.io/voice-dev-infra-services/voice/hyperion-explorer-plugin:latest as sa
+
+FROM gcr.io/voice-ops-dev/alpine-node:16
 ARG BUILDKITE_ACCESS_TOKEN
-RUN apt-get update \
-        && apt-get upgrade -y \
-        && apt-get autoremove \
-        && apt-get install -y build-essential git curl netcat && \
-        curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
-        apt-get install -y nodejs && npm install pm2@latest -g && \
-        apt-get install -y jq
-
-WORKDIR /hyperion-history-api
-COPY . .
-COPY .npmrc.template .npmrc
-RUN npm ci && \
-      ./scripts/getBuildkiteArtifact.sh
-
-RUN adduser --system --group voice && chown -R voice:voice /hyperion-history-api
+USER root
+RUN apk install jq && npm install pm2@latest -g
 USER voice
+COPY --chown=voice:voice . .
+COPY --chown=voice:voice --from=explore explorer /opt/app/hyperion-history-api/plugins/repos/explorer
+COPY --chown=voice:voice --from=sa sa /opt/app/hyperion-history-api/plugins/repos/sa
+RUN mv .npmrc.template .npmrc && \
+ npm ci && \
+ rm .npmrc && \
+ pm2 startup
 
 EXPOSE 7000

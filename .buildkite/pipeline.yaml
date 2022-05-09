@@ -6,57 +6,52 @@ defaults:
         repository: https://github.com/voice-social/voice-buildkite-template.git
 
 steps:
-
-  - command:
-      - buildkite-agent artifact download hyperion-history-api/plugins/repos/* . --build 6bad3cd3-7c34-4910-8f45-1ec0e3b667f1
+# build docker images dev-main
+  - label: ":building_construction: Trigger kaniko build"
+    command:
+      - "buildkite-agent pipeline upload voice-buildkite-template/kaniko/build/template.yaml"
+    env:
+      IMAGE: gcr.io/voice-dev-infra-services/voice/voice-eos-hyperion
+      DOCKERFILE: Dockerfile
     agents: *default-agents
+    plugins: *default-plugins
+    if: build.tag == null
 
-# # build docker images dev-main
-#   - label: ":building_construction: Trigger kaniko build"
-#     command:
-#       - "buildkite-agent pipeline upload voice-buildkite-template/kaniko/build/template.yaml"
-#     env:
-#       IMAGE: gcr.io/voice-dev-infra-services/voice/voice-eos-hyperion
-#       DOCKERFILE: Dockerfile
-#     agents: *default-agents
-#     plugins: *default-plugins
-#     if: build.tag == null
+  - wait
 
-#   - wait
+# dev deploy
+  - label: ":buildkite: Upload dev deploy pipeline"
+    command: |
+      buildkite-agent pipeline upload .buildkite/dev.yaml
+    agents:
+      queue: voice-main-dev-deployer
+    if: build.tag == null && build.branch == "master" && build.pull_request.id == null
+    retry:
+      manual:
+        permit_on_passed: true
 
-# # dev deploy
-#   - label: ":buildkite: Upload dev deploy pipeline"
-#     command: |
-#       buildkite-agent pipeline upload .buildkite/dev.yaml
-#     agents:
-#       queue: voice-main-dev-deployer
-#     if: build.tag == null && build.branch == "master" && build.pull_request.id == null
-#     retry:
-#       manual:
-#         permit_on_passed: true
+  - wait
+  - block: ":rocket: Release!"
+    if: build.tag == null && build.branch == "master" && build.pull_request.id == null
+# promote image
+  - label: ":arrow_up: Trigger gcrane promote"
+    command:
+      - "buildkite-agent pipeline upload voice-buildkite-template/gcrane/promote/template.yaml"
+    env:
+      IMAGE_NAME: voice-eos-hyperion
+    agents: *default-agents
+    plugins: *default-plugins
+    if: build.tag == null && build.branch == "master" && build.pull_request.id == null
 
-#   - wait
-#   - block: ":rocket: Release!"
-#     if: build.tag == null && build.branch == "master" && build.pull_request.id == null
-# # promote image
-#   - label: ":arrow_up: Trigger gcrane promote"
-#     command:
-#       - "buildkite-agent pipeline upload voice-buildkite-template/gcrane/promote/template.yaml"
-#     env:
-#       IMAGE_NAME: voice-eos-hyperion
-#     agents: *default-agents
-#     plugins: *default-plugins
-#     if: build.tag == null && build.branch == "master" && build.pull_request.id == null
+  - wait
 
-#   - wait
-
-# # prod deploy
-#   - label: ":buildkite: Upload prod deploy pipeline"
-#     command: |
-#       buildkite-agent pipeline upload .buildkite/prod.yaml
-#     agents:
-#       queue: voice-infra-prod-v2
-#     if: build.tag == null && build.branch == "master" && build.pull_request.id == null
-#     retry:
-#       manual:
-#         permit_on_passed: true
+# prod deploy
+  - label: ":buildkite: Upload prod deploy pipeline"
+    command: |
+      buildkite-agent pipeline upload .buildkite/prod.yaml
+    agents:
+      queue: voice-infra-prod-v2
+    if: build.tag == null && build.branch == "master" && build.pull_request.id == null
+    retry:
+      manual:
+        permit_on_passed: true
