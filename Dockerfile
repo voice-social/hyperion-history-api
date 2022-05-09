@@ -14,8 +14,9 @@ COPY .npmrc.template .npmrc
 RUN npm ci && \
       git clone https://github.com/voice-social/hyperion-explorer-plugin /hyperion-history-api/plugins/repos/explorer && \
       mv /hyperion-history-api/plugins/repos/explorer/.npmrc.template  /hyperion-history-api/plugins/repos/explorer/.npmrc && \
+      ./hpm install -r https://github.com/voice-social/hyperion-simpleassets-plugin sa && \
       ./hpm build-all && \
-      ./hpm enable explorer && \
+      ./hpm enable explorer &&  ./hpm enable sa && \
       pm2 startup
 
 RUN adduser --system --group voice && chown -R voice:voice /hyperion-history-api
