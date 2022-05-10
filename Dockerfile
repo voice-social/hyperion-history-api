@@ -10,7 +10,7 @@ COPY --chown=voice:voice . .
 RUN mv .npmrc.template .npmrc && \
  npm ci && \
  rm .npmrc
-COPY --chown=voice:voice --from=explorer explorer /opt/app/plugins/repos/explorer
-COPY --chown=voice:voice --from=sa sa /opt/app/plugins/repos/sa
+COPY --chown=voice:voice --from=explorer /opt/app/ /opt/app/plugins/repos/explorer
+COPY --chown=voice:voice --from=sa /opt/app/ /opt/app/plugins/repos/sa
 RUN ./hpm enable explorer && ./hpm enable sa
 EXPOSE 7000
