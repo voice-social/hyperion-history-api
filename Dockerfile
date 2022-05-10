@@ -2,16 +2,15 @@ FROM gcr.io/voice-dev-infra-services/voice/hyperion-explorer-plugin:latest as ex
 FROM gcr.io/voice-dev-infra-services/voice/hyperion-simpleassets-plugin:latest as sa
 
 FROM gcr.io/voice-ops-dev/alpine-node:16
-ARG BUILDKITE_ACCESS_TOKEN
+ARG NPM_AUTH_TOKEN
 USER root
 RUN apk add jq && npm install pm2@latest -g
 USER voice
 COPY --chown=voice:voice . .
-COPY --chown=voice:voice --from=explorer explorer /opt/app/hyperion-history-api/plugins/repos/explorer
-COPY --chown=voice:voice --from=sa sa /opt/app/hyperion-history-api/plugins/repos/sa
 RUN mv .npmrc.template .npmrc && \
  npm ci && \
- rm .npmrc && \
- pm2 startup
-
+ rm .npmrc
+COPY --chown=voice:voice --from=explorer explorer /opt/app/plugins/repos/explorer
+COPY --chown=voice:voice --from=sa sa /opt/app/plugins/repos/sa
+RUN ./hpm enable explorer && ./hpm enable sa
 EXPOSE 7000
