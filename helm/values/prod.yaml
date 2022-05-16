@@ -254,6 +254,13 @@ deployments:
           - name: "{{ if .Values.config.abi_scan }}eos-hyperion-config-abi{{ else }}eos-hyperion-config{{ end }}"
             mountPath: tmp/voice.config.json
             subPath: voice.config.json
+
+podDisruptionBudgets:
+  voice-eos-hyperion-api:
+    maxUnavailable: 10%
+  voice-hyperion-history-indexer:
+    maxUnavailable: 10%
+
 hpas:
   voice-eos-hyperion-api:
     minReplicas: 1
