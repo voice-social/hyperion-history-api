@@ -1,5 +1,5 @@
 FROM gcr.io/voice-dev-infra-services/voice/hyperion-explorer-plugin:latest as explorer
-FROM gcr.io/voice-dev-infra-services/voice/hyperion-simpleassets-plugin:latest  as sa
+FROM gcr.io/voice-dev-infra-services/voice/hyperion-simpleassets-plugin:latest as sa
 
 FROM gcr.io/voice-ops-dev/alpine-node:16 as build
 ARG NPM_AUTH_TOKEN
