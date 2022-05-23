@@ -7,7 +7,7 @@ config:
   ## this only take the image form URL
   chain_logo_url: "https://storage.googleapis.com/voice_logo/logo.ico"
   es_replicas: 1
-  abi_scan: true
+  abi_scan: false
   elastic_host: vault:secret/data/devops/elasticsearch#ELASTIC_HOST
   elastic_user: elastic
   elastic_pass: vault:secret/data/devops/elasticsearch#ELASTIC_PASSWORD
@@ -333,7 +333,7 @@ configmaps:
           parser: '1.8'
           auto_stop: 0
           index_version: v1
-          debug: true
+          debug: false
           bp_logs: false
           bp_monitoring: false
           ipc_debug_rate: 60000
@@ -463,7 +463,7 @@ configmaps:
           parser: '1.8'
           auto_stop: 0
           index_version: v1
-          debug: true
+          debug: false
           bp_logs: false
           bp_monitoring: false
           ipc_debug_rate: 60000
