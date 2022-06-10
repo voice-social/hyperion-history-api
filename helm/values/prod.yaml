@@ -178,7 +178,7 @@ deployments:
             subPath: voice.config.json
 
   voice-eos-hyperion-api:
-    replicaCount: 1
+    replicaCount: 2
     terminationGracePeriodSeconds: 60
     podAnnotations:
       releaseTime: '{{ dateInZone "2006-01-02 15:04:05Z" (now) "UTC"| quote }}'
