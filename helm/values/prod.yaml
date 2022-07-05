@@ -267,10 +267,10 @@ deployments:
         resources:
           requests:
             cpu: "500m"
-            memory: "500Mi"
+            memory: "512Mi"
           limits:
             cpu: "500m"
-            memory: "500Mi"
+            memory: "512Mi"
         volumeMounts:
           - name: eos-hyperion-connections
             mountPath: /tmp/connections.json
