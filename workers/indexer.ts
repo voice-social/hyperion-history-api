@@ -5,6 +5,8 @@ import {ElasticRoutes} from '../helpers/elastic-routes';
 import {hLog} from "../helpers/common_functions";
 import {Message} from "amqplib";
 import 'newrelic'
+import {bootstrap} from 'global-agent';
+bootstrap();
 export default class IndexerWorker extends HyperionWorker {
 
     private indexQueue: QueueObject<any>;
