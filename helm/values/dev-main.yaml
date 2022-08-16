@@ -141,7 +141,7 @@ deployments:
           user: voice
           pass: voice
           vhost: voice
-        image: "gcr.io/voice-dev-infra-services/auto-init-container/auto-init-container:latest"
+        image: "gcr.io/voice-dev-infra-services/auto-init-container/auto-init-container:{{ .Values.release.tag }}"
         imagePullPolicy: Always
         command: ['bash','check-rabbit-mq-health.sh','voice-hyperion-rabbit-mq.{{ .Release.Namespace }}.svc.cluster.local']
     lifecycle:
