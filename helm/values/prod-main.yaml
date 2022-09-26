@@ -159,7 +159,7 @@ deployments:
         extraVars:
           NEW_RELIC_NO_CONFIG_FILE: "true"
           NEW_RELIC_APP_NAME: "voice-eos-hyperion-indexer-prod"
-          NEW_RELIC_LICENSE_KEY: "vault:secret/data/applications/prod#NEWRELIC_LICENSE_KEY"
+          NEW_RELIC_LICENSE_KEY: "vault:secret/data/voice/prod#NEWRELIC_LICENSE_KEY"
           NEW_RELIC_DISTRIBUTED_TRACING_ENABLED: "true"
           NEW_RELIC_LOG: "stdout"
           NEW_RELIC_LABELS: "env: prod"
@@ -174,10 +174,10 @@ deployments:
           no_proxy: ".svc.cluster.local,.service,.internal,.vops.int,.googleapis.com,.gcr.io,.gstatic.com,gcr.io,.gcp.cloud.es.io,accounts.google.com,packages.cloud.google.com,metadata.google.internal,.psc.us-west1.gcp.cloud.es.io,0.0.0.0"
           GLOBAL_AGENT_NO_PROXY	: ".svc.cluster.local,.service,.internal,.vops.int,.googleapis.com,.gcr.io,.gstatic.com,gcr.io,.gcp.cloud.es.io,accounts.google.com,packages.cloud.google.com,metadata.google.internal,.psc.us-west1.gcp.cloud.es.io,0.0.0.0"
           # LaunchDarkly Config
-          LAUNCHDARKLY_SDK_KEY: "vault:secret/data/applications/prod#LAUNCHDARKLY_SDK_KEY"
-          LAUNCHDARKLY_CLIENT_SIDE_ID: "vault:secret/data/applications/prod#LAUNCHDARKLY_CLIENT_SIDE_ID"
+          LAUNCHDARKLY_SDK_KEY: "vault:secret/data/voice/prod#LAUNCHDARKLY_SDK_KEY"
+          LAUNCHDARKLY_CLIENT_SIDE_ID: "vault:secret/data/voice/prod#LAUNCHDARKLY_CLIENT_SIDE_ID"
           # Google Analytics
-          BLOCK_EXPLORER_GOOGLE_ANALYTICS_ID: "vault:secret/data/applications/prod#BLOCK_EXPLORER_GOOGLE_ANALYTICS_ID"
+          BLOCK_EXPLORER_GOOGLE_ANALYTICS_ID: "vault:secret/data/voice/prod#BLOCK_EXPLORER_GOOGLE_ANALYTICS_ID"
         resources:
           requests:
             cpu: "1500m"
@@ -246,7 +246,7 @@ deployments:
         extraVars:
           NEW_RELIC_NO_CONFIG_FILE: "true"
           NEW_RELIC_APP_NAME: "voice-eos-hyperion-api-prod"
-          NEW_RELIC_LICENSE_KEY: "vault:secret/data/applications/prod#NEWRELIC_LICENSE_KEY"
+          NEW_RELIC_LICENSE_KEY: "vault:secret/data/voice/prod#NEWRELIC_LICENSE_KEY"
           NEW_RELIC_DISTRIBUTED_TRACING_ENABLED: "true"
           NEW_RELIC_LOG: "stdout"
           NEW_RELIC_LABELS: "env: prod"
@@ -261,10 +261,10 @@ deployments:
           no_proxy: ".svc.cluster.local,.service,.internal,.vops.int,.googleapis.com,.gcr.io,.gstatic.com,gcr.io,.gcp.cloud.es.io,accounts.google.com,packages.cloud.google.com,metadata.google.internal,.psc.us-west1.gcp.cloud.es.io,0.0.0.0"
           GLOBAL_AGENT_NO_PROXY	: ".svc.cluster.local,.service,.internal,.vops.int,.googleapis.com,.gcr.io,.gstatic.com,gcr.io,.gcp.cloud.es.io,accounts.google.com,packages.cloud.google.com,metadata.google.internal,.psc.us-west1.gcp.cloud.es.io,0.0.0.0"
           # LaunchDarkly Config
-          LAUNCHDARKLY_SDK_KEY: "vault:secret/data/applications/prod#LAUNCHDARKLY_SDK_KEY"
-          LAUNCHDARKLY_CLIENT_SIDE_ID: "vault:secret/data/applications/prod#LAUNCHDARKLY_CLIENT_SIDE_ID"
+          LAUNCHDARKLY_SDK_KEY: "vault:secret/data/voice/prod#LAUNCHDARKLY_SDK_KEY"
+          LAUNCHDARKLY_CLIENT_SIDE_ID: "vault:secret/data/voice/prod#LAUNCHDARKLY_CLIENT_SIDE_ID"
           # Google Analytics
-          BLOCK_EXPLORER_GOOGLE_ANALYTICS_ID: "vault:secret/data/applications/prod#BLOCK_EXPLORER_GOOGLE_ANALYTICS_ID"
+          BLOCK_EXPLORER_GOOGLE_ANALYTICS_ID: "vault:secret/data/voice/prod#BLOCK_EXPLORER_GOOGLE_ANALYTICS_ID"
         lifecycle:
           preStop:
             exec:
@@ -595,7 +595,7 @@ configmaps:
           voice:
             name: "voice production chain"
             chain_id: "8fb2215338190e08e3ec6c2b012d5d2a4adc2bbce11c9e8746ddfe7dec199fe5"
-            http: "http://chain-api-lb-prod.service.b-oma-prod.vops.int:8888"
-            ship: "ws://ship-lb-prod.service.b-oma-prod.vops.int:8080"
+            http: "http://chain-api.prod.svc.cluster.local:8888"
+            ship: "ws://chain-sh-peer.prod.svc.cluster.local:8080"
             WS_ROUTER_PORT: 7001
             WS_ROUTER_HOST: "127.0.0.1"
