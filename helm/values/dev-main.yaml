@@ -116,6 +116,10 @@ statefulsets:
 deployments:
   voice-hyperion-history-indexer:
     replicaCount: 1
+    strategy:
+      type: RollingUpdate
+      rollingUpdate:
+        maxUnavailable: 10%
     terminationGracePeriodSeconds: 60
     podAnnotations:
       releaseTime: '{{ dateInZone "2006-01-02 15:04:05Z" (now) "UTC"| quote }}'
@@ -193,6 +197,10 @@ deployments:
 
   voice-eos-hyperion-api:
     replicaCount: 1
+    strategy:
+      type: RollingUpdate
+      rollingUpdate:
+        maxUnavailable: 10%
     terminationGracePeriodSeconds: 60
     podAnnotations:
       releaseTime: '{{ dateInZone "2006-01-02 15:04:05Z" (now) "UTC"| quote }}'
