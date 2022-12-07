@@ -34,7 +34,7 @@ localConfigs:
           ELASTIC_USER: "elastic"
           ELASTIC_PASS: "{{ tpl .Values.commonConfigs.elasticSearchPass . }}"
           ELASTIC_HOST: "{{ tpl .Values.commonConfigs.elasticSearchHost . }}"
-          SERVER_NAME: "{{ tpl .Values.commonConfigs.blockExplorerUrlWithoutHtttps . }}"
+          SERVER_NAME: "{{ tpl .Values.commonConfigs.blockExplorerHost . }}"
           http_proxy: "{{ tpl .Values.commonConfigs.httpProxy . }}"
           https_proxy: "{{ tpl .Values.commonConfigs.httpProxy . }}"
           GLOBAL_AGENT_HTTP_PROXY: "{{ tpl .Values.commonConfigs.httpProxy . }}"
