@@ -1,0 +1,48 @@
+localConfigs:
+  deployments:
+    voice-hyperion-history-indexer:
+      initContainers:
+        check-hyperion-rabbit-mq-health:
+          user: voice
+          pass: voice
+          vhost: voice
+      containers:
+        voice-eos-hyperion-indexer:
+          ELASTIC_USER: "elastic"
+          ELASTIC_PASS: "{{ tpl .Values.commonConfigs.elasticSearchPass . }}"
+          ELASTIC_HOST: "{{ tpl .Values.commonConfigs.elasticSearchHost . }}"
+          SERVER_NAME: "{{ tpl .Values.commonConfigs.blockExplorerUrlWithoutHtttps . }}"
+          http_proxy: "{{ tpl .Values.commonConfigs.httpProxy . }}"
+          https_proxy: "{{ tpl .Values.commonConfigs.httpProxy . }}"
+          GLOBAL_AGENT_HTTP_PROXY: "{{ tpl .Values.commonConfigs.httpProxy . }}"
+          GLOBAL_AGENT_HTTPS_PROXY: "{{ tpl .Values.commonConfigs.httpProxy . }}"
+          no_proxy: "{{ tpl .Values.commonConfigs.noProxy . }},.psc.us-west1.gcp.cloud.es.io,0.0.0.0"
+          GLOBAL_AGENT_NO_PROXY: "{{ tpl .Values.commonConfigs.noProxy . }},.psc.us-west1.gcp.cloud.es.io,0.0.0.0"
+          # LaunchDarkly Config
+          LAUNCHDARKLY_SDK_KEY: "{{ tpl .Values.commonConfigs.launchDarklySdkKey . }}"
+          LAUNCHDARKLY_CLIENT_SIDE_ID: "{{ tpl .Values.commonConfigs.launchdarklyClientSideId . }}"
+          # Google Analytics
+          BLOCK_EXPLORER_GOOGLE_ANALYTICS_ID: "{{ tpl .Values.commonConfigs.blockExplorerGoogleAnalyticsId . }}"
+    voice-eos-hyperion-api:
+      initContainers:
+        check-hyperion-rabbit-mq-health:
+          user: voice
+          pass: voice
+          vhost: voice
+      containers:
+        voice-eos-hyperion-api:
+          ELASTIC_USER: "elastic"
+          ELASTIC_PASS: "{{ tpl .Values.commonConfigs.elasticSearchPass . }}"
+          ELASTIC_HOST: "{{ tpl .Values.commonConfigs.elasticSearchHost . }}"
+          SERVER_NAME: "{{ tpl .Values.commonConfigs.blockExplorerHost . }}"
+          http_proxy: "{{ tpl .Values.commonConfigs.httpProxy . }}"
+          https_proxy: "{{ tpl .Values.commonConfigs.httpProxy . }}"
+          GLOBAL_AGENT_HTTP_PROXY: "{{ tpl .Values.commonConfigs.httpProxy . }}"
+          GLOBAL_AGENT_HTTPS_PROXY: "{{ tpl .Values.commonConfigs.httpProxy . }}"
+          no_proxy: "{{ tpl .Values.commonConfigs.noProxy . }},.psc.us-west1.gcp.cloud.es.io,0.0.0.0"
+          GLOBAL_AGENT_NO_PROXY: "{{ tpl .Values.commonConfigs.noProxy . }},.psc.us-west1.gcp.cloud.es.io,0.0.0.0"
+          # LaunchDarkly Config
+          LAUNCHDARKLY_SDK_KEY: "{{ tpl .Values.commonConfigs.launchDarklySdkKey . }}"
+          LAUNCHDARKLY_CLIENT_SIDE_ID: "{{ tpl .Values.commonConfigs.launchdarklyClientSideId . }}"
+          # Google Analytics
+          BLOCK_EXPLORER_GOOGLE_ANALYTICS_ID: "{{ tpl .Values.commonConfigs.blockExplorerGoogleAnalyticsId . }}"
